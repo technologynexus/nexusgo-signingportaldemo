@@ -1,0 +1,23 @@
+{
+  "name": "SigningPortalDemo",
+  "authors": [
+    "Martin Råsbo <martin.rasbo@nexusgroup.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jQuery": "3.3.1",
+    "jquery-validation": "1.16.0",
+    "jquery-validation-unobtrusive": "v3.2.10",
+    "bootstrap": "v3.3.7"
+  }
+}

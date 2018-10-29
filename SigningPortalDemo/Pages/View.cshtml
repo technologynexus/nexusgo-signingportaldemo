@@ -1,0 +1,11 @@
+﻿@page "{id?}"
+@model SigningPortalDemo.Pages.ViewModel
+@{
+    ViewData["Title"] = "View";
+}
+
+<h2>@Model.RequestInfo.Name</h2>
+
+<div style="height:800px">
+    @Html.Raw(TempData["Embed"])
+</div>

@@ -1,0 +1,11 @@
+﻿@page
+@model SigningPortalDemo.Pages.ClearRequestModel
+@{
+    ViewData["Title"] = "ClearRequest";
+}
+
+<h2>Are you sure?</h2>
+
+<form method="post">
+    <input type="submit" value="Clear @Model.Count Request(s)" class="btn btn-default" />
+</form>
