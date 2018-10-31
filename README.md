@@ -34,6 +34,10 @@ To run the application, the following Environment variables needs to be set:
 
 * [.NET Core 2.0](https://docs.microsoft.com/en-us/dotnet/) - The web framework used
 
+## Reference deployment
+
+* [Levepo](https://levepo.azurewebsites.net/)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
