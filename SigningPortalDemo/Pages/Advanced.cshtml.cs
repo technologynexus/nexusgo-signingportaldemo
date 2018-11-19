@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using SigningPortalDemo.Models;
 using SigningPortalDemo.SignApi;
+using SigningPortalDemo.SignApi.Request;
 using SigningPortalDemo.Utilities;
 using System;
 using System.Collections.Generic;
@@ -38,8 +39,8 @@ namespace SigningPortalDemo.Pages
 
             documents.Add(document);
 
-            List<RequestSigner> signers = new List<RequestSigner>();
-            RequestSigner s = new RequestSigner()
+            List<Signer> signers = new List<Signer>();
+            Signer s = new Signer()
             {
                 Method = NewRequest.AuthenticationMethod,
                 SignerEmail = NewRequest.Signer
@@ -49,7 +50,7 @@ namespace SigningPortalDemo.Pages
 
             Int32 signBefore = (Int32)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds + 14 * 24 * 3600;
 
-            var createSignatureRequest = new CreateSignatureRequest()
+            var createSignatureRequest = new SignatureRequest()
             {
                 OnBehalfOf = NewRequest.OnBehalfOf,
                 Name = NewRequest.Name,
@@ -62,7 +63,7 @@ namespace SigningPortalDemo.Pages
             HttpClient client = await HttpUtil.GetAuthorizedHttpClientAsync();
 
             MemoryStream ms = new MemoryStream();
-            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(CreateSignatureRequest));
+            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(SignatureRequest));
             ser.WriteObject(ms, createSignatureRequest);
             byte[] json = ms.ToArray();
             ms.Close();

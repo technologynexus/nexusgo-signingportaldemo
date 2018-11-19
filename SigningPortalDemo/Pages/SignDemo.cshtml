@@ -1,0 +1,53 @@
+﻿@page
+@model SigningPortalDemo.Pages.SignDemoModel
+@{
+    ViewData["Title"] = "NewCustomer";
+}
+@{var woodChoices = new List<SelectListItem>
+{
+    new SelectListItem { Text = "Budget Wood", Value="BUDGET_WOOD" },
+    new SelectListItem { Text = "Premium Wood", Value="PREMIUM_WOOD" },
+    new SelectListItem { Text = "Professional Wood", Value="PRO_WOOD" }
+};
+}
+@if (Model.ErrorResponse != null)
+{
+<h2>Error!</h2>
+<h3>@Model.ErrorResponse.ErrorCode</h3>
+@Model.ErrorResponse.ErrorMessage
+}
+else if (Model.DemoContract != null)
+{
+<h2>Customer Terms and Conditions created!</h2>
+<iframe src=@DemoContract />
+}
+else
+{
+<h2>Rent any wood you like</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="SignDemo.Name" class="control-label" />
+                <input asp-for="SignDemo.Name" type="text" class="form-control" />
+                <span asp-validation-for="SignDemo.Name" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="SignDemo.Email" class="control-label" />
+                <input asp-for="SignDemo.Email" type="text" class="form-control" />
+                <span asp-validation-for="SignDemo.Email" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="SignDemo.PersonalNumber" class="control-label" />
+                <input asp-for="SignDemo.PersonalNumber" type="text" class="form-control" />
+                <span asp-validation-for="SignDemo.PersonalNumber" class="text-danger" />
+            </div>
+            <div class="form-group">
+                <label asp-for="SignDemo.Wood" class="control-label" />
+                @Html.DropDownListFor(model => model.SignDemo.Wood, woodChoices, new { @class = "form-control" })
+            </div>
+            <input type="submit" value="Rent" class="btn btn-default" />
+        </form>
+    </div>
+</div>
+}

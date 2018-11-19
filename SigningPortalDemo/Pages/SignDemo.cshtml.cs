@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using SigningPortalDemo.DB;
 using SigningPortalDemo.SignApi;
-using SigningPortalDemo.SignApi.Request;
+using SigningPortalDemo.SignApi.Sign;
 using SigningPortalDemo.Utilities;
 using System;
 using System.Collections.Generic;
@@ -19,12 +19,15 @@ using System.Text;
 
 namespace SigningPortalDemo.Pages
 {
-    public class NewCustomerModel : PageModel
+    public class SignDemoModel : PageModel
     {
         [BindProperty]
-        public NewCustomer NewCustomer { get; set; }
+        public string State { get; set; }
+        public SignDemo SignDemo { get; set; }
+        public Document DemoContract { get; set; }
         public ErrorResponse ErrorResponse { get; set; }
         public string RequestId { get; set; }
+        public string SigningState { get; set; }
         private Boolean ClearResult = true;
         public void OnGet()
         {
@@ -58,7 +61,7 @@ namespace SigningPortalDemo.Pages
                 document.Add(new Paragraph(""));
                 document.Add(new Paragraph("Please read these Terms and Conditions (\"Terms\", \"Terms and Conditions\") carefully before using the https://levepo.azurewebsites.com website (the \"Service\") operated by Levepo (\"us\", \"we\", or \"our\")."));
                 document.Add(new Paragraph(""));
-                document.Add(new Paragraph("\"" + NewCustomer.Name + "\" access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service."));
+                document.Add(new Paragraph("\"" + SignDemo.Name + "\" access to and use of the Service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users and others who access or use the Service."));
                 document.Add(new Paragraph(""));
                 document.Add(new Paragraph(new Text("By accessing or using the Service you agree to be bound by these Terms. If you disagree with any part of the terms then you may not access the Service.").SetBold()));
                 document.Add(new Paragraph(""));
@@ -85,28 +88,24 @@ namespace SigningPortalDemo.Pages
                 {
                     new DocumentInfo()
                     {
-                        Name = NewCustomer.Name,
+                        Name = SignDemo.Name,
                         Data = base64String
                     }
                 };
 
-                List<Signer> signers = new List<Signer>();
-                Signer s = new Signer()
+                Signer signer = new Signer()
                 {
-                    Method = NewCustomer.AuthenticationMethod,
-                    SignerEmail = NewCustomer.Email
+                    UserId = SignDemo.PersonalNumber,
+                    Method = "SE_BANKID"
                 };
-
-                signers.Add(s);
 
                 var signatureRequest = new SignatureRequest()
                 {
-                    OnBehalfOf = "Levepo",
-                    Name = $"'{NewCustomer.Name}' Terms and Conditions",
+                    Documents = documents,
+                    Name = $"'{SignDemo.Name}' Terms and Conditions",
+                    Message = "Agree to renting firewood",
                     ResponseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}/api/callback",
-                    Signers = signers,
-                    SignBefore = 0,
-                    Documents = documents
+                    Signer = signer
                 };
 
                 HttpClient client = await HttpUtil.GetAuthorizedHttpClientAsync();
@@ -117,12 +116,13 @@ namespace SigningPortalDemo.Pages
                 byte[] json = ms.ToArray();
                 ms.Close();
 
+                
                 var content = new StringContent(Encoding.UTF8.GetString(json, 0, json.Length), Encoding.UTF8, "application/json");
-                var response = client.PostAsync($"{Startup.Configuration["Api:SignApi:Url"]}/request", content).Result;
+                var response = client.PostAsync($"{Startup.Configuration["Api:SignApi:Url"]}/sign", content).Result;
                 string responseBody = await response.Content.ReadAsStringAsync();
                 if (response.IsSuccessStatusCode)
                 {
-                    RequestId = JsonConvert.DeserializeObject<RequestInfo>(responseBody).Id;
+                    RequestId = JsonConvert.DeserializeObject<SignResponse>(responseBody).RequestId;
                     var requestInfoResponse = client.GetAsync($"{Startup.Configuration["Api:SignApi:Url"]}/request/{RequestId}?includeDocs=true").Result;
                     if(requestInfoResponse.IsSuccessStatusCode)
                     {
@@ -147,10 +147,11 @@ namespace SigningPortalDemo.Pages
         }
     }
 
-    public class NewCustomer
+    public class SignDemo
     {
-        public string Email { get; set; }
+        public string Wood { get; set; }
         public string Name { get; set; }
-        public string AuthenticationMethod { get; set; }
+        public string Email { get; set; }
+        public string PersonalNumber { get; set; }
     }
 }

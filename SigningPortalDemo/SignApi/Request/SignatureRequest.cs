@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SigningPortalDemo.SignApi
+namespace SigningPortalDemo.SignApi.Request
 {
-    public class CreateSignatureRequest
+    public class SignatureRequest
     {
         public IList<DocumentInfo> Documents { get; set; }
 
@@ -17,6 +17,6 @@ namespace SigningPortalDemo.SignApi
 
         public long SignBefore { get; set; }
 
-        public IList<RequestSigner> Signers { get; set; }
+        public IList<Signer> Signers { get; set; }
     }
 }
