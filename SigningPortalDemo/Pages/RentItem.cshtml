@@ -1,0 +1,26 @@
+﻿@page
+@model SigningPortalDemo.Pages.RentItemModel
+@{
+    ViewData["Title"] = "SignDemo";
+}
+@{var woodChoices = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "Budget Wood", Value="BUDGET_WOOD" },
+        new SelectListItem { Text = "Premium Wood", Value="PREMIUM_WOOD" },
+        new SelectListItem { Text = "Professional Wood", Value="PRO_WOOD" }
+    };
+}
+
+<h2>Rent any wood you like</h2>
+<div class="row" style="text-align:center;">
+    <div class="col-md-4" style="width:100%;">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label asp-for="SignDemo.Wood" class="control-label" />
+                @Html.DropDownListFor(model => model.SignDemo.Wood, woodChoices, new { @class = "form-control" })
+            </div>
+            <input type="submit" value="Next" class="btn btn-primary" style="width:150px;"/>
+        </form>
+    </div>
+</div>
+

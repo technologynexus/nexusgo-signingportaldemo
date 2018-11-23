@@ -1,0 +1,41 @@
+﻿@page
+@model SigningPortalDemo.Pages.SignStatusModel
+@{
+    ViewData["Title"] = "SignStatus";
+    var requestId = Model.RequestId;
+}
+
+<h2>SignStatus</h2>
+<div>
+    <div>
+        <img src="/images/bankid_64x64.png" style="display:block; margin-left:auto; margin-right:auto;"/>
+    </div>
+    <div style="padding-top:50px; text-align:center;">
+        <h3 id="SigningStateText">Waiting for user to start BankID-application..</h3>
+        <img src="~/images/ajax-loader.gif" />
+    </div>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function poll() {
+        $.ajax({
+            type: "GET",
+            url: "/api/Poll/@requestId",
+            dataType: "json"
+        })
+        .done(function (data) {
+            if (data.state == "IN_PROGRESS") {
+                $("#SigningStateText").text(function () {
+                    return "Waiting for user to sign.."
+                });
+                setTimeout(poll, 2000);
+            } else if (data.state == "COMPLETED"){
+                $("#SigningStateText").text(function ($data) {
+                    return "Signing state is " + data.state + ".."
+                });
+                window.location = "/View/@requestId";
+            }       
+        })
+    }
+    poll();
+</script>

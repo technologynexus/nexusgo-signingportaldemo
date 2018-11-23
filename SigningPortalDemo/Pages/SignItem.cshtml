@@ -1,0 +1,30 @@
+﻿@page
+@model SigningPortalDemo.Pages.SignItemModel
+@{
+    ViewData["Title"] = "SignItem";
+}
+@if (Model.ErrorResponse != null)
+{
+    <h2>!!ERROR!!</h2>
+    <h3>@Model.ErrorResponse.ErrorCode</h3>
+    @Model.ErrorResponse.ErrorMessage
+}
+else
+{
+    <h2>Terms and conditions created!</h2>
+    <div style="height:700px">
+        @Html.Raw(TempData["SignEmbed"])
+    </div>
+    <div class="col-md-4" style="width:100%;">
+        <form method="post" enctype="multipart/form-data" style="margin-top:10px;">
+            <div class="form-group" style="width:400px; display:block; margin-left:auto; margin-right:auto;">
+                <label asp-for="PersonalNumber" class="control-label"></label>
+                <input asp-for="PersonalNumber" type="text" class="form-control" />
+                <span asp-validation-for="PersonalNumber" class="text-danger"></span>
+            </div>
+            <input type="submit" value="Sign with Mobile BankID" asp-page-handler="Sign" style="width:400px; display:block; margin-left:auto; margin-right:auto;" class="btn btn-primary" />
+        </form>
+    </div>
+}
+
+

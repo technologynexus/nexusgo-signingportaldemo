@@ -28,7 +28,7 @@ To run the application, the following Environment variables needs to be set:
 
 ## Deployment
 
-[Create webapp in Azure](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-get-started-dotnet")
+[Create webapp in Azure](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-get-started-dotnet)
 
 ## Built With
 
