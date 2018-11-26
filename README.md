@@ -32,7 +32,7 @@ To run the application, the following Environment variables needs to be set:
 
 ## Built With
 
-* [.NET Core 2.0](https://docs.microsoft.com/en-us/dotnet/) - The web framework used
+* [.NET Core 2.1](https://docs.microsoft.com/en-us/dotnet/) - The web framework used
 
 ## Reference deployment
 
