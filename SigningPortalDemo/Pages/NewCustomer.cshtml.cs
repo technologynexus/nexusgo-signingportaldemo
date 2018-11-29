@@ -109,6 +109,10 @@ namespace SigningPortalDemo.Pages
                     Documents = documents
                 };
 
+                if (NewCustomer.AuthenticationMethod.Equals("SE_BANKID")) {
+                    signatureRequest.ViewProtected = false;
+                }
+
                 HttpClient client = await HttpUtil.GetAuthorizedHttpClientAsync();
 
                 MemoryStream ms = new MemoryStream();

@@ -18,5 +18,7 @@ namespace SigningPortalDemo.SignApi.Request
         public long SignBefore { get; set; }
 
         public IList<Signer> Signers { get; set; }
+
+        public Boolean ViewProtected { get; set; } = true;
     }
 }
