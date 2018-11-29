@@ -1,6 +1,6 @@
 # Signing portal demo
 
-[![Build Status](https://dev.azure.com/technologynexus/GO/_apis/build/status/demo/nexusgo-signingportaldemo%20build)](https://dev.azure.com/technologynexus/GO/_build/latest?definitionId=6)
+![Build Status](https://technologynexus.visualstudio.com/GO/_apis/build/status/demo%20levepo/build-master%20nexusgo-signingportaldemo?branchName=master)
 
 This project uses the Nexus PDF signing API
 
